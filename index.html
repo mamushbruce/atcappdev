@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ATC Web Development Courses - Pricing</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <style>
         :root {
             --primary: #2563eb;
@@ -12,6 +14,7 @@
             --accent: #3b82f6;
             --background: #f8fafc;
             --text: #1e293b;
+            --highlight: #f59e0b;
         }
 
         * {
@@ -25,6 +28,7 @@
             background-color: var(--background);
             color: var(--text);
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
         .container {
@@ -34,18 +38,48 @@
         }
 
         header {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            padding: 3rem 0;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
-            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) translateX(-50%);
+            }
+            40% {
+                transform: translateY(-30px) translateX(-50%);
+            }
+            60% {
+                transform: translateY(-15px) translateX(-50%);
+            }
         }
 
         .pricing-section {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            margin-bottom: 3rem;
+            margin: 6rem 0;
         }
 
         .pricing-card {
@@ -53,27 +87,73 @@
             border-radius: 1rem;
             padding: 2rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-            cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
 
-        .pricing-card:hover {
-            transform: translateY(-5px);
+        .discount-badge {
+            position: absolute;
+            top: 1rem;
+            right: -2rem;
+            background: var(--highlight);
+            color: white;
+            padding: 0.5rem 3rem;
+            transform: rotate(45deg);
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .price {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: bold;
             color: var(--primary);
             margin: 1rem 0;
+            display: flex;
+            align-items: baseline;
+        }
+
+        .price small {
+            font-size: 1rem;
+            margin-left: 0.5rem;
+            opacity: 0.7;
         }
 
         .full-course {
             background: linear-gradient(135deg, var(--accent), var(--primary));
             color: white;
-            padding: 2rem;
+            padding: 3rem;
             border-radius: 1rem;
             margin-top: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .savings-pill {
+            background: var(--highlight);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            display: inline-block;
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .feature-list li {
+            margin: 0.5rem 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-list li::before {
+            content: "✓";
+            color: var(--accent);
+            margin-right: 0.5rem;
+            font-weight: bold;
         }
 
         .savings-calculator {
@@ -84,18 +164,38 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        button {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
+        select {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 1rem 0;
+            border: 2px solid var(--accent);
             border-radius: 0.5rem;
-            cursor: pointer;
-            transition: background 0.3s ease;
+            font-size: 1rem;
         }
 
-        button:hover {
-            background: var(--secondary);
+        .highlight-text {
+            color: var(--highlight);
+            font-weight: bold;
+        }
+
+        .decoration-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .circle-1 {
+            width: 200px;
+            height: 200px;
+            top: -100px;
+            left: -100px;
+        }
+
+        .circle-2 {
+            width: 300px;
+            height: 300px;
+            bottom: -150px;
+            right: -150px;
         }
 
         @media (max-width: 768px) {
@@ -105,35 +205,69 @@
             
             .pricing-section {
                 grid-template-columns: 1fr;
+                margin: 3rem 0;
+            }
+
+            .price {
+                font-size: 2rem;
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>ATC Web Development Courses</h1>
-        <p>Comprehensive web and mobile development training</p>
+        <div class="header-content">
+            <h1 class="display-text" data-aos="fade-down">ATC Web Development Courses</h1>
+            <p data-aos="fade-up" data-aos-delay="200">Transform Your Future with Expert Web Development Training</p>
+        </div>
+        <div class="scroll-indicator">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
+            </svg>
+        </div>
     </header>
 
     <div class="container">
         <div class="pricing-section">
-            <div class="pricing-card" id="hourly">
+            <div class="pricing-card" data-aos="fade-up">
                 <h2>Hourly Rate</h2>
-                <div class="price">UGX 10,000</div>
+                <div class="price">
+                    UGX 10,000
+                    <small>/hour</small>
+                </div>
                 <p>Flexible learning at your own pace</p>
+                <ul class="feature-list">
+                    <li>One-on-one attention</li>
+                    <li>Flexible scheduling</li>
+                    <li>Custom pace learning</li>
+                </ul>
             </div>
 
-            <div class="pricing-card" id="weekly">
+            <div class="pricing-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="discount-badge">SAVE 30%</div>
                 <h2>Weekly Rate</h2>
-                <div class="price">UGX 120,000</div>
+                <div class="price">
+                    UGX 120,000
+                    <small>/week</small>
+                </div>
                 <p>3 hours of normal training</p>
-                <p>Additional discounted hours at UGX 7,000/hr for 2.5 hours (UGX 84,000)</p>
+                <div class="savings-pill">Extra Hours at UGX 7,000/hr!</div>
+                <ul class="feature-list">
+                    <li>Structured learning path</li>
+                    <li>Weekly assignments</li>
+                    <li>Progress tracking</li>
+                </ul>
             </div>
 
-            <div class="pricing-card" id="monthly">
+            <div class="pricing-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="discount-badge">BEST VALUE</div>
                 <h2>Monthly Packages</h2>
-                <div class="price">From UGX 336,000</div>
-                <ul>
+                <div class="price">
+                    UGX 336,000
+                    <small>/month</small>
+                </div>
+                <div class="savings-pill">Save up to UGX 144,000!</div>
+                <ul class="feature-list">
                     <li>Ideal: UGX 480,000</li>
                     <li>Discounted: UGX 390,000</li>
                     <li>Promotional: UGX 336,000</li>
@@ -141,23 +275,26 @@
             </div>
         </div>
 
-        <div class="full-course">
+        <div class="full-course" data-aos="zoom-in">
+            <div class="decoration-circle circle-1"></div>
+            <div class="decoration-circle circle-2"></div>
             <h2>Full Course Package</h2>
+            <div class="savings-pill">15% OFF COMBINED COURSES</div>
             <div id="courseDetails">
                 <h3>Web Development (6 months)</h3>
-                <p>Ideal: UGX 2,880,000</p>
-                <p>Discounted: UGX 2,340,000</p>
+                <p>Ideal: <span class="highlight-text">UGX 2,880,000</span></p>
+                <p>Discounted: <span class="highlight-text">UGX 2,340,000</span></p>
 
                 <h3>Mobile App Development (3 months)</h3>
-                <p>Regular: UGX 1,260,000 (UGX 15,000/hour)</p>
-                <p>Discounted: UGX 1,050,000 (UGX 350,000/month)</p>
+                <p>Regular: <span class="highlight-text">UGX 1,260,000</span></p>
+                <p>Discounted: <span class="highlight-text">UGX 1,050,000</span></p>
 
-                <h3>Combined Package Discount</h3>
-                <p>Total: UGX 2,881,500 (15% off combined courses)</p>
+                <h3>Combined Package Special Offer</h3>
+                <p>Total: <span class="highlight-text">UGX 2,881,500</span></p>
             </div>
         </div>
 
-        <div class="savings-calculator">
+        <div class="savings-calculator" data-aos="fade-up">
             <h2>Savings Calculator</h2>
             <p>Select your course duration to see potential savings:</p>
             <select id="duration" onchange="calculateSavings()">
@@ -170,16 +307,14 @@
     </div>
 
     <script>
-        // Animate cards on page load
-        anime({
-            targets: '.pricing-card',
-            translateY: [50, 0],
-            opacity: [0, 1],
-            delay: anime.stagger(100),
-            easing: 'easeOutElastic(1, .8)',
-            duration: 1500
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100
         });
 
+        // Calculate savings function
         function calculateSavings() {
             const duration = document.getElementById('duration').value;
             let regularPrice, discountedPrice, savings;
@@ -201,11 +336,12 @@
 
             savings = regularPrice - discountedPrice;
 
-            document.getElementById('savings').innerHTML = `
+            const savingsElement = document.getElementById('savings');
+            savingsElement.innerHTML = `
                 <p style="margin-top: 1rem">
                     Regular Price: UGX ${regularPrice.toLocaleString()}<br>
                     Discounted Price: UGX ${discountedPrice.toLocaleString()}<br>
-                    <strong>Total Savings: UGX ${savings.toLocaleString()}</strong>
+                    <strong class="highlight-text">Total Savings: UGX ${savings.toLocaleString()}</strong>
                 </p>
             `;
 
